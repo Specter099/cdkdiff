@@ -1,0 +1,22 @@
+Stack ApiStack
+
+IAM Statement Changes
+┌───┬──────────────────────────────┬────────┬──────────────────────────────┬────────────────────────────────┬───────────────┐
+│   │ Resource                     │ Effect │ Action                       │ Principal                      │ Condition     │
+├───┼──────────────────────────────┼────────┼──────────────────────────────┼────────────────────────────────┼───────────────┤
+│ - │ ${UsersTable/Resource}       │ Allow  │ dynamodb:DeleteItem           │ AWS:${LambdaRole}              │               │
+│   │                              │        │ dynamodb:GetItem              │                                │               │
+├───┼──────────────────────────────┼────────┼──────────────────────────────┼────────────────────────────────┼───────────────┤
+│ + │ ${NewBucket/Resource}        │ Allow  │ s3:GetObject                 │ AWS:${LambdaRole}              │               │
+└───┴──────────────────────────────┴────────┴──────────────────────────────┴────────────────────────────────┴───────────────┘
+
+Resources
+[-] AWS::DynamoDB::Table UsersTable destroy
+[+] AWS::S3::Bucket NewBucket
+[~] AWS::Lambda::Function ApiFunction
+ └─ [~] Properties
+     └─ [~] Environment
+         └─ [~] Variables
+             └─ [+] NEW_VAR: new-value
+
+✨  Number of stacks with differences: 1

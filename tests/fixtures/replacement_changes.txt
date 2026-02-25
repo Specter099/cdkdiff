@@ -1,0 +1,13 @@
+Stack DataStack
+
+Resources
+[~] AWS::RDS::DBInstance Database replace
+ ├─ [~] DBInstanceClass
+ │   ├─ [-] db.t3.micro
+ │   └─ [+] db.m5.large
+[~] AWS::EC2::SecurityGroup WebSecurityGroup
+ └─ [~] SecurityGroupIngress
+     ├─ [-] {"CidrIp":"0.0.0.0/0","FromPort":443,"IpProtocol":"tcp","ToPort":443}
+     └─ [+] {"CidrIp":"10.0.0.0/8","FromPort":443,"IpProtocol":"tcp","ToPort":443}
+
+✨  Number of stacks with differences: 1

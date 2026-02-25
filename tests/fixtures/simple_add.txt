@@ -1,0 +1,7 @@
+Stack MyStack
+
+Resources
+[+] AWS::S3::Bucket MyBucket
+[+] AWS::Lambda::Function MyFunction
+
+✨  Number of stacks with differences: 1

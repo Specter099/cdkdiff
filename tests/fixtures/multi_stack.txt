@@ -1,0 +1,12 @@
+Stack StackOne
+
+Resources
+[+] AWS::S3::Bucket DataBucket
+
+Stack StackTwo
+
+Resources
+[-] AWS::DynamoDB::Table OldTable destroy
+[~] AWS::Lambda::Function ProcessorFn
+
+✨  Number of stacks with differences: 2
