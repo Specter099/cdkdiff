@@ -1,7 +1,6 @@
 from __future__ import annotations
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import List, Optional
 
 
 class RiskLevel(Enum):
@@ -24,6 +23,12 @@ class RiskLevel(Enum):
 
 _RISK_ORDER = [RiskLevel.LOW, RiskLevel.MEDIUM, RiskLevel.HIGH]
 
+RISK_EMOJI: dict[RiskLevel, str] = {
+    RiskLevel.HIGH: "🔴",
+    RiskLevel.MEDIUM: "🟡",
+    RiskLevel.LOW: "🟢",
+}
+
 
 class ChangeType(Enum):
     ADD = "add"
@@ -44,10 +49,10 @@ class Change:
 @dataclass
 class StackDiff:
     name: str
-    changes: List[Change] = field(default_factory=list)
+    changes: list[Change] = field(default_factory=list)
 
     @property
-    def risk(self) -> Optional[RiskLevel]:
+    def risk(self) -> RiskLevel | None:
         if not self.changes:
             return None
         return max((c.risk for c in self.changes), key=lambda r: _RISK_ORDER.index(r))
@@ -55,14 +60,14 @@ class StackDiff:
 
 @dataclass
 class DiffSummary:
-    stacks: List[StackDiff] = field(default_factory=list)
+    stacks: list[StackDiff] = field(default_factory=list)
 
     @property
     def total_changes(self) -> int:
         return sum(len(s.changes) for s in self.stacks)
 
     @property
-    def highest_risk(self) -> Optional[RiskLevel]:
+    def highest_risk(self) -> RiskLevel | None:
         risks = [s.risk for s in self.stacks if s.risk is not None]
         if not risks:
             return None

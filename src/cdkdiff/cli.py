@@ -1,7 +1,11 @@
 from __future__ import annotations
 import os
+import re
 import sys
 import click
+
+# owner/repo — letters, digits, hyphens, underscores, dots
+_REPO_RE = re.compile(r"^[\w.\-]+/[\w.\-]+$")
 from rich.console import Console
 from cdkdiff.parser import parse
 from cdkdiff.scorer import score_summary
@@ -68,6 +72,10 @@ def _post_to_github(body: str) -> None:
         raise click.ClickException("GITHUB_TOKEN environment variable not set.")
     if not repo:
         raise click.ClickException("GITHUB_REPOSITORY environment variable not set.")
+    if not _REPO_RE.match(repo):
+        raise click.ClickException(
+            f"GITHUB_REPOSITORY has invalid format: {repo!r}. Expected 'owner/repo'."
+        )
     if not pr_number:
         raise click.ClickException("Could not determine PR number. Set GITHUB_PR_NUMBER.")
 
@@ -77,10 +85,18 @@ def _post_to_github(body: str) -> None:
 
 def _resolve_pr_number() -> int | None:
     if pr := os.environ.get("GITHUB_PR_NUMBER"):
-        return int(pr)
+        try:
+            return int(pr)
+        except ValueError:
+            raise click.ClickException(
+                f"GITHUB_PR_NUMBER is not a valid integer: {pr!r}"
+            )
     # Derive from GITHUB_REF=refs/pull/123/merge
     ref = os.environ.get("GITHUB_REF", "")
     parts = ref.split("/")
     if len(parts) >= 3 and parts[1] == "pull":
-        return int(parts[2])
+        try:
+            return int(parts[2])
+        except ValueError:
+            pass  # malformed ref — fall through to return None
     return None

@@ -1,17 +1,12 @@
 from rich.console import Console
 from rich.table import Table
 from rich import box
-from cdkdiff.models import DiffSummary, RiskLevel, ChangeType
+from cdkdiff.models import DiffSummary, RiskLevel, ChangeType, RISK_EMOJI
 
 _RISK_COLOR = {
     RiskLevel.HIGH: "red",
     RiskLevel.MEDIUM: "yellow",
     RiskLevel.LOW: "green",
-}
-_RISK_EMOJI = {
-    RiskLevel.HIGH: "🔴",
-    RiskLevel.MEDIUM: "🟡",
-    RiskLevel.LOW: "🟢",
 }
 _CHANGE_LABEL = {
     ChangeType.ADD: "[green]+[/green]",
@@ -25,7 +20,7 @@ def print_summary(summary: DiffSummary, console: Console | None = None) -> None:
         console = Console()
 
     highest = summary.highest_risk
-    badge = _RISK_EMOJI.get(highest, "⚪") if highest else "⚪"
+    badge = RISK_EMOJI.get(highest, "⚪") if highest else "⚪"
     risk_label = highest.value.upper() if highest else "NONE"
     color = _RISK_COLOR.get(highest, "white") if highest else "white"
 
@@ -40,7 +35,7 @@ def print_summary(summary: DiffSummary, console: Console | None = None) -> None:
     for stack in summary.stacks:
         stack_risk = stack.risk
         stack_color = _RISK_COLOR.get(stack_risk, "white") if stack_risk else "white"
-        stack_badge = _RISK_EMOJI.get(stack_risk, "⚪") if stack_risk else "⚪"
+        stack_badge = RISK_EMOJI.get(stack_risk, "⚪") if stack_risk else "⚪"
 
         table = Table(
             title=f"{stack_badge} [{stack_color}]{stack.name}[/{stack_color}]",
@@ -62,7 +57,7 @@ def print_summary(summary: DiffSummary, console: Console | None = None) -> None:
                     c.resource_type,
                     c.logical_id,
                     _CHANGE_LABEL[c.change_type],
-                    f"{_RISK_EMOJI[c.risk]} [{risk_color}]{c.risk.value.upper()}[/{risk_color}]",
+                    f"{RISK_EMOJI[c.risk]} [{risk_color}]{c.risk.value.upper()}[/{risk_color}]",
                 )
 
         console.print(table)
