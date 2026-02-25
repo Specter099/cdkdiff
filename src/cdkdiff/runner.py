@@ -1,11 +1,12 @@
 from __future__ import annotations
 import fnmatch
 import subprocess
-from typing import List
+
+_SUBPROCESS_TIMEOUT = 300  # seconds
 
 
 def run_cdk_diff(
-    stack_names: List[str],
+    stack_names: list[str],
     context_path: str = ".",
 ) -> str:
     """Run cdk diff and return stdout. cdk exits 1 when diffs exist — that's normal."""
@@ -16,6 +17,7 @@ def run_cdk_diff(
             cwd=context_path,
             capture_output=True,
             text=True,
+            timeout=_SUBPROCESS_TIMEOUT,
         )
     except FileNotFoundError as e:
         raise RuntimeError(f"cdk not found: {e}") from e
@@ -29,7 +31,7 @@ def run_cdk_diff(
     return result.stdout
 
 
-def list_stacks(context_path: str = ".") -> List[str]:
+def list_stacks(context_path: str = ".") -> list[str]:
     """Return all stack names from `cdk list`."""
     try:
         result = subprocess.run(
@@ -38,13 +40,14 @@ def list_stacks(context_path: str = ".") -> List[str]:
             capture_output=True,
             text=True,
             check=True,
+            timeout=_SUBPROCESS_TIMEOUT,
         )
     except FileNotFoundError as e:
         raise RuntimeError(f"cdk not found: {e}") from e
     return [line.strip() for line in result.stdout.splitlines() if line.strip()]
 
 
-def expand_stack_patterns(patterns: List[str], context_path: str = ".") -> List[str]:
+def expand_stack_patterns(patterns: list[str], context_path: str = ".") -> list[str]:
     """Expand glob patterns against available stacks. Returns matching stack names."""
     if not any("*" in p or "?" in p for p in patterns):
         return patterns  # No globs — use as-is
