@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cdkdiff"
+version = "0.1.0"
+description = "CDK diff with risk scoring"
+requires-python = ">=3.9"
+dependencies = [
+    "click>=8.0",
+    "rich>=13.0",
+    "requests>=2.28",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7", "pytest-cov", "ruff", "mypy"]
+
+[project.scripts]
+cdkdiff = "cdkdiff.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
