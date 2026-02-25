@@ -1,4 +1,3 @@
-import pytest
 from cdkdiff.models import Change, ChangeType, DiffSummary, RiskLevel, StackDiff
 from cdkdiff.scorer import score_change, score_summary
 

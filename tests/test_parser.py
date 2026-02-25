@@ -1,7 +1,6 @@
 from pathlib import Path
-import pytest
 from cdkdiff.parser import parse
-from cdkdiff.models import ChangeType, RiskLevel
+from cdkdiff.models import ChangeType
 
 FIXTURES = Path(__file__).parent / "fixtures"
 
