@@ -1,5 +1,4 @@
 from unittest.mock import patch, MagicMock
-import pytest
 from cdkdiff.github_client import post_pr_comment, find_existing_comment
 
 

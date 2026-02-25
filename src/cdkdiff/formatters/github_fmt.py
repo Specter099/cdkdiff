@@ -1,4 +1,4 @@
-from cdkdiff.models import DiffSummary, RiskLevel, ChangeType, RISK_EMOJI
+from cdkdiff.models import DiffSummary, ChangeType, RISK_EMOJI
 
 _CHANGE_SYMBOL = {
     ChangeType.ADD: "+",

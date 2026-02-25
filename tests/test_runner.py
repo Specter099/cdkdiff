@@ -1,5 +1,4 @@
 from unittest.mock import patch, MagicMock
-import subprocess
 import pytest
 from cdkdiff.runner import run_cdk_diff, list_stacks, expand_stack_patterns
 

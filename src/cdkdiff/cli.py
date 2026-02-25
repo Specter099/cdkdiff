@@ -3,9 +3,6 @@ import os
 import re
 import sys
 import click
-
-# owner/repo — letters, digits, hyphens, underscores, dots
-_REPO_RE = re.compile(r"^[\w.\-]+/[\w.\-]+$")
 from rich.console import Console
 from cdkdiff.parser import parse
 from cdkdiff.scorer import score_summary
@@ -15,7 +12,8 @@ from cdkdiff.formatters.github_fmt import format_github
 from cdkdiff.formatters.terminal import print_summary
 from cdkdiff.models import RiskLevel
 
-_RISK_ORDER = [RiskLevel.LOW, RiskLevel.MEDIUM, RiskLevel.HIGH]
+# owner/repo — letters, digits, hyphens, underscores, dots
+_REPO_RE = re.compile(r"^[\w.\-]+/[\w.\-]+$")
 
 
 @click.command(context_settings={"help_option_names": ["-h", "--help"]})

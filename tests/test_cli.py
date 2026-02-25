@@ -1,7 +1,6 @@
 from click.testing import CliRunner
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 from cdkdiff.cli import main
-from cdkdiff.models import Change, ChangeType, DiffSummary, RiskLevel, StackDiff
 
 
 def _sample_diff_output():
