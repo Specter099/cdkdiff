@@ -1,8 +1,10 @@
 from __future__ import annotations
+
+from rich import box
 from rich.console import Console
 from rich.table import Table
-from rich import box
-from cdkdiff.models import DiffSummary, RiskLevel, ChangeType, RISK_EMOJI
+
+from cdkdiff.models import RISK_EMOJI, ChangeType, DiffSummary, RiskLevel
 
 _RISK_COLOR = {
     RiskLevel.HIGH: "red",

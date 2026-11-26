@@ -1,5 +1,7 @@
 from __future__ import annotations
+
 import re
+
 from cdkdiff.models import Change, ChangeType, DiffSummary, RiskLevel, StackDiff
 
 # Matches top-level resource change lines (not indented)

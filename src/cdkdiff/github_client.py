@@ -1,5 +1,7 @@
 from __future__ import annotations
+
 import requests
+
 from cdkdiff.formatters.github_fmt import _HIDDEN_MARKER
 
 _API_BASE = "https://api.github.com"

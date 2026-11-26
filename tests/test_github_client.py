@@ -1,5 +1,6 @@
-from unittest.mock import patch, MagicMock
-from cdkdiff.github_client import post_pr_comment, find_existing_comment
+from unittest.mock import MagicMock, patch
+
+from cdkdiff.github_client import find_existing_comment, post_pr_comment
 
 
 def _mock_response(json_data, status_code=200):

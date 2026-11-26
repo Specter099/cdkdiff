@@ -1,16 +1,19 @@
 from __future__ import annotations
+
 import os
 import re
 import sys
+
 import click
 from rich.console import Console
-from cdkdiff.parser import parse
-from cdkdiff.scorer import score_summary
-from cdkdiff.runner import run_cdk_diff, expand_stack_patterns
-from cdkdiff.formatters.json_fmt import format_json
+
 from cdkdiff.formatters.github_fmt import format_github
+from cdkdiff.formatters.json_fmt import format_json
 from cdkdiff.formatters.terminal import print_summary
 from cdkdiff.models import RiskLevel
+from cdkdiff.parser import parse
+from cdkdiff.runner import expand_stack_patterns, run_cdk_diff
+from cdkdiff.scorer import score_summary
 
 # owner/repo — letters, digits, hyphens, underscores, dots
 _REPO_RE = re.compile(r"^[\w.\-]+/[\w.\-]+$")

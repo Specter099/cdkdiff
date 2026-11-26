@@ -1,6 +1,7 @@
 from pathlib import Path
-from cdkdiff.parser import parse
+
 from cdkdiff.models import ChangeType
+from cdkdiff.parser import parse
 
 FIXTURES = Path(__file__).parent / "fixtures"
 
