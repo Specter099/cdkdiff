@@ -15,7 +15,7 @@ jobs:
     permissions:
       contents: read
     with:
-      python-versions: '["3.9","3.11","3.12"]'
+      python-versions: '["3.11","3.12"]'
       install-command: 'pip install -e .[dev]'
       test-command: 'pytest'
 
