@@ -22,6 +22,7 @@ def test_output_json():
         result = runner.invoke(main, ["--output", "json"])
     assert result.exit_code == 0
     import json
+
     data = json.loads(result.output)
     assert "summary" in data
     assert "stacks" in data
@@ -60,8 +61,10 @@ def test_fail_on_medium_exits_1_when_medium_risk():
 
 
 def test_stack_name_args_passed_to_runner():
-    with patch("cdkdiff.cli.run_cdk_diff", return_value="") as mock_run, \
-         patch("cdkdiff.cli.expand_stack_patterns", return_value=["StackA"]):
+    with (
+        patch("cdkdiff.cli.run_cdk_diff", return_value="") as mock_run,
+        patch("cdkdiff.cli.expand_stack_patterns", return_value=["StackA"]),
+    ):
         runner = CliRunner()
         runner.invoke(main, ["StackA"])
     mock_run.assert_called_once()

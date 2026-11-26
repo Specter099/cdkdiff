@@ -5,9 +5,7 @@ import re
 from cdkdiff.models import Change, ChangeType, DiffSummary, RiskLevel, StackDiff
 
 # Matches top-level resource change lines (not indented)
-_RESOURCE_RE = re.compile(
-    r"^\[([+\-~])\]\s+(AWS::[^\s]+)\s+(\S+)(.*)?$"
-)
+_RESOURCE_RE = re.compile(r"^\[([+\-~])\]\s+(AWS::[^\s]+)\s+(\S+)(.*)?$")
 # Matches IAM table rows with change indicator
 _IAM_ROW_RE = re.compile(r"^\│\s+([+\-])\s+\│\s+\$\{([^}]+)\}")
 
@@ -20,7 +18,7 @@ def parse(output: str) -> DiffSummary:
     for line in output.splitlines():
         # Stack boundary
         if line.startswith("Stack ") and not line.startswith("Stack arn:"):
-            stack_name = line[len("Stack "):].strip()
+            stack_name = line[len("Stack ") :].strip()
             current_stack = StackDiff(name=stack_name)
             stacks.append(current_stack)
             in_iam_section = False
@@ -44,13 +42,15 @@ def parse(output: str) -> DiffSummary:
             if m:
                 indicator, resource_ref = m.group(1), m.group(2)
                 change_type = ChangeType.ADD if indicator == "+" else ChangeType.REMOVE
-                current_stack.changes.append(Change(
-                    resource_type="AWS::IAM::Statement",
-                    logical_id=resource_ref,
-                    change_type=change_type,
-                    risk=RiskLevel.LOW,  # scorer will update
-                    details=f"IAM statement {'added' if indicator == '+' else 'removed'}",
-                ))
+                current_stack.changes.append(
+                    Change(
+                        resource_type="AWS::IAM::Statement",
+                        logical_id=resource_ref,
+                        change_type=change_type,
+                        risk=RiskLevel.LOW,  # scorer will update
+                        details=f"IAM statement {'added' if indicator == '+' else 'removed'}",
+                    )
+                )
             continue
 
         # Parse resource change lines
@@ -71,13 +71,15 @@ def parse(output: str) -> DiffSummary:
             requires_replacement = "replace" in suffix
             details = suffix if suffix else ""
 
-            current_stack.changes.append(Change(
-                resource_type=resource_type,
-                logical_id=logical_id,
-                change_type=change_type,
-                risk=RiskLevel.LOW,  # scorer will update
-                details=details,
-                requires_replacement=requires_replacement,
-            ))
+            current_stack.changes.append(
+                Change(
+                    resource_type=resource_type,
+                    logical_id=logical_id,
+                    change_type=change_type,
+                    risk=RiskLevel.LOW,  # scorer will update
+                    details=details,
+                    requires_replacement=requires_replacement,
+                )
+            )
 
     return DiffSummary(stacks=stacks)

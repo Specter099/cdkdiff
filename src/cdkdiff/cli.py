@@ -21,21 +21,30 @@ _REPO_RE = re.compile(r"^[\w.\-]+/[\w.\-]+$")
 
 @click.command(context_settings={"help_option_names": ["-h", "--help"]})
 @click.argument("stacks", nargs=-1)
-@click.option("--output", "-o",
-              type=click.Choice(["terminal", "json", "pr-comment"]),
-              default="terminal",
-              show_default=True,
-              help="Output format.")
-@click.option("--fail-on",
-              type=click.Choice(["low", "medium", "high"]),
-              default=None,
-              help="Exit 1 if any change meets or exceeds this risk level.")
-@click.option("--post-github", is_flag=True, default=False,
-              help="Post diff as a GitHub PR comment (requires GITHUB_TOKEN).")
-@click.option("--context", default=".", show_default=True,
-              help="Path to CDK app directory.")
-def main(stacks: tuple[str, ...], output: str, fail_on: str | None,
-         post_github: bool, context: str) -> None:
+@click.option(
+    "--output",
+    "-o",
+    type=click.Choice(["terminal", "json", "pr-comment"]),
+    default="terminal",
+    show_default=True,
+    help="Output format.",
+)
+@click.option(
+    "--fail-on",
+    type=click.Choice(["low", "medium", "high"]),
+    default=None,
+    help="Exit 1 if any change meets or exceeds this risk level.",
+)
+@click.option(
+    "--post-github",
+    is_flag=True,
+    default=False,
+    help="Post diff as a GitHub PR comment (requires GITHUB_TOKEN).",
+)
+@click.option("--context", default=".", show_default=True, help="Path to CDK app directory.")
+def main(
+    stacks: tuple[str, ...], output: str, fail_on: str | None, post_github: bool, context: str
+) -> None:
     """CDK diff with risk scoring.
 
     Optionally pass stack names or glob patterns to diff specific stacks.
@@ -65,6 +74,7 @@ def main(stacks: tuple[str, ...], output: str, fail_on: str | None,
 
 def _post_to_github(body: str) -> None:
     from cdkdiff.github_client import post_pr_comment
+
     token = os.environ.get("GITHUB_TOKEN")
     repo = os.environ.get("GITHUB_REPOSITORY")
     pr_number = _resolve_pr_number()
@@ -89,9 +99,7 @@ def _resolve_pr_number() -> int | None:
         try:
             return int(pr)
         except ValueError:
-            raise click.ClickException(
-                f"GITHUB_PR_NUMBER is not a valid integer: {pr!r}"
-            )
+            raise click.ClickException(f"GITHUB_PR_NUMBER is not a valid integer: {pr!r}")
     # Derive from GITHUB_REF=refs/pull/123/merge
     ref = os.environ.get("GITHUB_REF", "")
     parts = ref.split("/")

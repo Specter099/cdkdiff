@@ -2,7 +2,9 @@ from cdkdiff.models import Change, ChangeType, DiffSummary, RiskLevel, StackDiff
 from cdkdiff.scorer import score_change, score_summary
 
 
-def _change(resource_type: str, change_type: ChangeType, requires_replacement: bool = False) -> Change:
+def _change(
+    resource_type: str, change_type: ChangeType, requires_replacement: bool = False
+) -> Change:
     return Change(
         resource_type=resource_type,
         logical_id="TestResource",
@@ -46,12 +48,17 @@ def test_lambda_update_is_low():
 
 
 def test_score_summary_sets_risk_on_changes():
-    summary = DiffSummary(stacks=[
-        StackDiff("MyStack", changes=[
-            Change("AWS::DynamoDB::Table", "T", ChangeType.REMOVE, RiskLevel.LOW),
-            Change("AWS::S3::Bucket", "B", ChangeType.ADD, RiskLevel.LOW),
-        ])
-    ])
+    summary = DiffSummary(
+        stacks=[
+            StackDiff(
+                "MyStack",
+                changes=[
+                    Change("AWS::DynamoDB::Table", "T", ChangeType.REMOVE, RiskLevel.LOW),
+                    Change("AWS::S3::Bucket", "B", ChangeType.ADD, RiskLevel.LOW),
+                ],
+            )
+        ]
+    )
     scored = score_summary(summary)
     dynamo = next(c for c in scored.stacks[0].changes if c.resource_type == "AWS::DynamoDB::Table")
     assert dynamo.risk == RiskLevel.HIGH

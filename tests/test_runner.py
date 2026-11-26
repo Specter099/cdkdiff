@@ -15,7 +15,9 @@ def _mock_run(stdout: str, returncode: int = 0):
 
 
 def test_run_cdk_diff_returns_output():
-    with patch("subprocess.run", return_value=_mock_run("Stack MyStack\nResources\n", returncode=1)):
+    with patch(
+        "subprocess.run", return_value=_mock_run("Stack MyStack\nResources\n", returncode=1)
+    ):
         output = run_cdk_diff(stack_names=["MyStack"])
     assert "Stack MyStack" in output
 

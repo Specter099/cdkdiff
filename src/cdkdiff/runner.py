@@ -26,9 +26,7 @@ def run_cdk_diff(
 
     # cdk diff exits 1 when there are changes — not an error
     if result.returncode not in (0, 1):
-        raise RuntimeError(
-            f"cdk diff failed (exit {result.returncode}):\n{result.stderr}"
-        )
+        raise RuntimeError(f"cdk diff failed (exit {result.returncode}):\n{result.stderr}")
 
     return result.stdout
 
