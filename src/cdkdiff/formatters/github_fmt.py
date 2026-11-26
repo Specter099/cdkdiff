@@ -27,8 +27,10 @@ def format_github(summary: DiffSummary) -> str:
         risk = stack.risk
         stack_badge = RISK_EMOJI.get(risk, "⚪") if risk else "⚪"
         lines.append("<details>")
-        lines.append(f"<summary>{stack_badge} <strong>{stack.name}</strong> "
-                     f"({len(stack.changes)} changes)</summary>")
+        lines.append(
+            f"<summary>{stack_badge} <strong>{stack.name}</strong> "
+            f"({len(stack.changes)} changes)</summary>"
+        )
         lines.append("")
         if stack.changes:
             lines.append("| Resource Type | Logical ID | Change | Risk |")

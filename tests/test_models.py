@@ -22,23 +22,34 @@ def test_stack_diff_risk_empty():
 
 
 def test_stack_diff_risk_max():
-    sd = StackDiff(name="MyStack", changes=[
-        Change("AWS::S3::Bucket", "B", ChangeType.ADD, RiskLevel.LOW),
-        Change("AWS::DynamoDB::Table", "T", ChangeType.REMOVE, RiskLevel.HIGH),
-    ])
+    sd = StackDiff(
+        name="MyStack",
+        changes=[
+            Change("AWS::S3::Bucket", "B", ChangeType.ADD, RiskLevel.LOW),
+            Change("AWS::DynamoDB::Table", "T", ChangeType.REMOVE, RiskLevel.HIGH),
+        ],
+    )
     assert sd.risk == RiskLevel.HIGH
 
 
 def test_diff_summary_totals():
-    summary = DiffSummary(stacks=[
-        StackDiff("A", changes=[
-            Change("AWS::S3::Bucket", "B", ChangeType.ADD, RiskLevel.LOW),
-            Change("AWS::Lambda::Function", "F", ChangeType.UPDATE, RiskLevel.MEDIUM),
-        ]),
-        StackDiff("B", changes=[
-            Change("AWS::DynamoDB::Table", "T", ChangeType.REMOVE, RiskLevel.HIGH),
-        ]),
-    ])
+    summary = DiffSummary(
+        stacks=[
+            StackDiff(
+                "A",
+                changes=[
+                    Change("AWS::S3::Bucket", "B", ChangeType.ADD, RiskLevel.LOW),
+                    Change("AWS::Lambda::Function", "F", ChangeType.UPDATE, RiskLevel.MEDIUM),
+                ],
+            ),
+            StackDiff(
+                "B",
+                changes=[
+                    Change("AWS::DynamoDB::Table", "T", ChangeType.REMOVE, RiskLevel.HIGH),
+                ],
+            ),
+        ]
+    )
     assert summary.total_changes == 3
     assert summary.highest_risk == RiskLevel.HIGH
     assert len(summary.stacks) == 2

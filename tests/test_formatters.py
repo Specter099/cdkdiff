@@ -6,19 +6,33 @@ from cdkdiff.models import Change, ChangeType, DiffSummary, RiskLevel, StackDiff
 
 
 def _sample_summary() -> DiffSummary:
-    return DiffSummary(stacks=[
-        StackDiff("MyStack", changes=[
-            Change("AWS::DynamoDB::Table", "UsersTable", ChangeType.REMOVE, RiskLevel.HIGH,
-                   details="Resource will be deleted"),
-            Change("AWS::S3::Bucket", "NewBucket", ChangeType.ADD, RiskLevel.LOW),
-        ]),
-        StackDiff("OtherStack", changes=[
-            Change("AWS::Lambda::Function", "Fn", ChangeType.UPDATE, RiskLevel.LOW),
-        ]),
-    ])
+    return DiffSummary(
+        stacks=[
+            StackDiff(
+                "MyStack",
+                changes=[
+                    Change(
+                        "AWS::DynamoDB::Table",
+                        "UsersTable",
+                        ChangeType.REMOVE,
+                        RiskLevel.HIGH,
+                        details="Resource will be deleted",
+                    ),
+                    Change("AWS::S3::Bucket", "NewBucket", ChangeType.ADD, RiskLevel.LOW),
+                ],
+            ),
+            StackDiff(
+                "OtherStack",
+                changes=[
+                    Change("AWS::Lambda::Function", "Fn", ChangeType.UPDATE, RiskLevel.LOW),
+                ],
+            ),
+        ]
+    )
 
 
 # --- JSON formatter ---
+
 
 def test_json_format_structure():
     output = json.loads(format_json(_sample_summary()))
@@ -60,6 +74,7 @@ def test_json_no_changes_stack():
 
 
 # --- GitHub markdown formatter ---
+
 
 def test_github_contains_header():
     output = format_github(_sample_summary())
