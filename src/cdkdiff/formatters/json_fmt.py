@@ -1,4 +1,5 @@
 import json
+
 from cdkdiff.models import DiffSummary
 
 

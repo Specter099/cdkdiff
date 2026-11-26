@@ -1,4 +1,4 @@
-from cdkdiff.models import DiffSummary, ChangeType, RISK_EMOJI
+from cdkdiff.models import RISK_EMOJI, ChangeType, DiffSummary
 
 _CHANGE_SYMBOL = {
     ChangeType.ADD: "+",
@@ -17,8 +17,10 @@ def format_github(summary: DiffSummary) -> str:
         "",
         "| Stacks | Changes | Highest Risk |",
         "|--------|---------|--------------|",
-        f"| {len(summary.stacks)} | {summary.total_changes} | "
-        f"{badge} {highest.value.upper() if highest else 'NONE'} |",
+        (
+            f"| {len(summary.stacks)} | {summary.total_changes} | "
+            f"{badge} {highest.value.upper() if highest else 'NONE'} |"
+        ),
         "",
     ]
     for stack in summary.stacks:

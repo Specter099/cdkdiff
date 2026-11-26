@@ -1,7 +1,8 @@
 import json
-from cdkdiff.models import Change, ChangeType, DiffSummary, RiskLevel, StackDiff
-from cdkdiff.formatters.json_fmt import format_json
+
 from cdkdiff.formatters.github_fmt import format_github
+from cdkdiff.formatters.json_fmt import format_json
+from cdkdiff.models import Change, ChangeType, DiffSummary, RiskLevel, StackDiff
 
 
 def _sample_summary() -> DiffSummary:

@@ -1,4 +1,4 @@
-from cdkdiff.models import RiskLevel, ChangeType, Change, StackDiff, DiffSummary
+from cdkdiff.models import Change, ChangeType, DiffSummary, RiskLevel, StackDiff
 
 
 def test_risk_level_ordering():

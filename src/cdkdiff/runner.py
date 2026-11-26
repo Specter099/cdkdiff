@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 import fnmatch
 import subprocess
 
@@ -14,6 +15,7 @@ def run_cdk_diff(
     try:
         result = subprocess.run(
             cmd,
+            check=False,
             cwd=context_path,
             capture_output=True,
             text=True,

@@ -1,6 +1,8 @@
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
+
 import pytest
-from cdkdiff.runner import run_cdk_diff, list_stacks, expand_stack_patterns
+
+from cdkdiff.runner import expand_stack_patterns, list_stacks, run_cdk_diff
 
 
 def _mock_run(stdout: str, returncode: int = 0):
@@ -54,6 +56,8 @@ def test_expand_patterns_exact():
 
 
 def test_run_cdk_diff_raises_on_real_error():
-    with patch("subprocess.run", side_effect=FileNotFoundError("cdk not found")):
-        with pytest.raises(RuntimeError, match="cdk not found"):
-            run_cdk_diff(stack_names=[])
+    with (
+        patch("subprocess.run", side_effect=FileNotFoundError("cdk not found")),
+        pytest.raises(RuntimeError, match="cdk not found"),
+    ):
+        run_cdk_diff(stack_names=[])
